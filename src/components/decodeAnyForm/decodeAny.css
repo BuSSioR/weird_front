@@ -2,7 +2,7 @@
     margin: 40px;
     border-bottom: 2px solid #05bad2;
     border-right: 2px solid #05bad2;
-    transition: 0.3s;
+    transition: 0.1s;
     -webkit-box-shadow: 10px 10px 23px 5px rgba(179,163,179,1);
     -moz-box-shadow: 10px 10px 23px 5px rgba(179,163,179,1);
     box-shadow: 10px 10px 23px 5px rgba(179,163,179,1);

@@ -14,25 +14,21 @@ class App extends Component {
     decoded: '',
     decodedAny: ''
   }
-  toDecodeAnythingApiRequest = (event, url) => {
-    const state = { ...this.state }
-    const payload = {
-      'sentence': state.toDecodeAny,
-      'decode_list': state.toDecodeList
+
+  toEncodeChangedHandler = (event, url) => {
+    const toEncode = event.target.value;
+    this.setState({ toEncode: toEncode })
+  }
+  toEncodeSubmitHandler = (event, url) => {
+    let toEncode =
+      [...this.state.toEncode];
+    if (toEncode.length > 4) {
+      this.encodeApiRequest(event, url);
+    }else{
+      this.setState({encoded:'You need at least 4 characters!'})
     }
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    }).then(response => response.json()).then(data => { this.setState({ decodedAny: data['decoded'] }) })
   }
-  toDecodeAnyChangeHandler = (event) => {
-    let toDecodeAny = { ...this.state.toDecodeAny }
-    toDecodeAny = event.target.value;
-    this.setState({ toDecodeAny: toDecodeAny })
-  }
+
   encodeApiRequest = (event, url) => {
     const toEncode = { ...this.state }
     const payload = { 'sentence': toEncode.toEncode }
@@ -44,6 +40,41 @@ class App extends Component {
       body: JSON.stringify(payload)
     }).then(response => response.json()).then(data => { this.setState({ encoded: data['encoded'] }) })
   }
+
+
+  toDecodeAnythingApiRequest = (event, url) => {
+    const state = { ...this.state }
+    const payload = {
+      'sentence': state.toDecodeAny,
+      'decode_list': state.toDecodeList
+    }
+    if (payload.sentence.length<4){
+      this.setState({ decodedAny: 'Sentence is too short!' })
+    } else if (payload.sentence.split(' ').length!== payload.decode_list.length) {
+      this.setState({ decodedAny: 'Provide all words used in sentence!' })
+    } else {
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }).then(response => response.json()).then(data => { this.setState({ decodedAny: data['decoded'] }) })
+    }
+  }
+  toDecodeAnythingChangeHandler = (event) => {
+    let toDecodeAny = { ...this.state.toDecodeAny }
+    toDecodeAny = event.target.value;
+    this.setState({ toDecodeAny: toDecodeAny })
+  }
+
+  listChangedHandler = (event) => {
+    let list = { ...this.state.toDecodeList }
+    list = event.target.value.split(' ')
+    this.setState({ toDecodeList: list })
+  }
+
+
   decodeNativeApiRequest = (event, url) => {
     const toDecode = { ...this.state }
     const payload = { 'sentence': toDecode.toDecode }
@@ -56,22 +87,6 @@ class App extends Component {
     }).then(response => response.json()).then(data => { this.setState({ decoded: data['decoded'] }) })
   }
 
-  toEncodeChangedHandler = (event, url) => {
-    let toEncode = {
-      ...this.state.toEncode
-    };
-    toEncode = event.target.value;
-    this.setState({ toEncode: toEncode })
-    if (toEncode.length > 4) {
-      this.encodeApiRequest(event, url);
-    }
-  }
-
-  listChangedHandler = (event) => {
-    let list = { ...this.state.toDecodeList }
-    list = event.target.value.split(' ')
-    this.setState({ toDecodeList: list })
-  }
   toDecodeChangedHandler = (event, url) => {
     let toDecode = {
       ...this.state.toEncode
@@ -82,6 +97,16 @@ class App extends Component {
       this.decodeNativeApiRequest(event, url)
     }
   }
+  toDecodeSubmitHandler = (event, url) => {
+    let toDecode =
+      [...this.state.toDecode];
+    if (toDecode.length > 4) {
+      this.decodeNativeApiRequest(event, url);
+    }else{
+      this.setState({decoded:'You need at least 4 characters!'})
+    }
+  }
+  
   render() {
     return (
       <div className="App">
@@ -89,7 +114,7 @@ class App extends Component {
         <Row className="d-flex justify-content-center">
           <Col md='5'>
             <InputOutputForm
-              //click={(event)=>this.getApiResource(event,'http://localhost:5000/v1/encode')}
+              click={(event) => this.toEncodeSubmitHandler(event, 'http://localhost:5000/v1/encode')}
               changed={(event) => this.toEncodeChangedHandler(event, 'http://localhost:5000/v1/encode', 'toEncode')}
               heading='Encoder'
               subHeading='Encode your stuff!'
@@ -100,7 +125,7 @@ class App extends Component {
           </Col>
           <Col md='5'>
             <InputOutputForm
-              //click={(event)=>this.getApiResource(event,'http://localhost:5000/v1/encode')}
+              click={(event)=>this.toDecodeSubmitHandler(event,'http://localhost:5000/v1/decode_without_list')}
               changed={(event) => this.toDecodeChangedHandler(event, 'http://localhost:5000/v1/decode_without_list', 'toDecode')}
               heading='Native Decoder'
               subHeading='Decode stuff encoded by this app!'
@@ -116,12 +141,12 @@ class App extends Component {
               heading='Decoder'
               subHeading='Decode Anything!'
               placeholder='Sentence to decode'
-              listPlaceholder='Type words you have used to this sentence!'
+              listPlaceholder='Orginal words in sentece separated with spaces'
               listChanged={(event) => this.listChangedHandler(event)}
               toDecodeList={this.state.toDecodeList}
               click={(event) => this.toDecodeAnythingApiRequest(event, 'http://localhost:5000/v1/decode')}
               toEncode={this.state.toDecodeAny}
-              toDecodeChanged={(event) => this.toDecodeAnyChangeHandler(event)}
+              toDecodeChanged={(event) => this.toDecodeAnythingChangeHandler(event)}
               encoded={this.state.decodedAny}
             >
             </ DecodeAny>
