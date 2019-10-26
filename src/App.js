@@ -15,7 +15,7 @@ class App extends Component {
     decodedAny: ''
   }
 
-  toEncodeChangedHandler = (event, url) => {
+  toEncodeChangedHandler = (event) => {
     const toEncode = event.target.value;
     this.setState({ toEncode: toEncode })
   }
@@ -87,15 +87,12 @@ class App extends Component {
     }).then(response => response.json()).then(data => { this.setState({ decoded: data['decoded'] }) })
   }
 
-  toDecodeChangedHandler = (event, url) => {
+  toDecodeChangedHandler = (event) => {
     let toDecode = {
       ...this.state.toEncode
     };
     toDecode = event.target.value;
     this.setState({ toDecode: toDecode })
-    if (toDecode.length > 4) {
-      this.decodeNativeApiRequest(event, url)
-    }
   }
   toDecodeSubmitHandler = (event, url) => {
     let toDecode =
@@ -114,8 +111,8 @@ class App extends Component {
         <Row className="d-flex justify-content-center">
           <Col md='5'>
             <InputOutputForm
-              click={(event) => this.toEncodeSubmitHandler(event, 'http://localhost:5000/v1/encode')}
-              changed={(event) => this.toEncodeChangedHandler(event, 'http://localhost:5000/v1/encode', 'toEncode')}
+              click={(event) => this.toEncodeSubmitHandler(event, 'https://weird-text-2317.herokuapp.com/v1/encode')}
+              changed={(event) => this.toEncodeChangedHandler(event)}
               heading='Encoder'
               subHeading='Encode your stuff!'
               placeholder='Sentence to encode'
@@ -125,8 +122,8 @@ class App extends Component {
           </Col>
           <Col md='5'>
             <InputOutputForm
-              click={(event)=>this.toDecodeSubmitHandler(event,'http://localhost:5000/v1/decode_without_list')}
-              changed={(event) => this.toDecodeChangedHandler(event, 'http://localhost:5000/v1/decode_without_list', 'toDecode')}
+              click={(event)=>this.toDecodeSubmitHandler(event,'https://weird-text-2317.herokuapp.com/v1/decode_without_list')}
+              changed={(event) => this.toDecodeChangedHandler(event)}
               heading='Native Decoder'
               subHeading='Decode stuff encoded by this app!'
               placeholder='Sentence to decode'
@@ -144,7 +141,7 @@ class App extends Component {
               listPlaceholder='Orginal words in sentece separated with spaces'
               listChanged={(event) => this.listChangedHandler(event)}
               toDecodeList={this.state.toDecodeList}
-              click={(event) => this.toDecodeAnythingApiRequest(event, 'http://localhost:5000/v1/decode')}
+              click={(event) => this.toDecodeAnythingApiRequest(event, 'https://weird-text-2317.herokuapp.com/v1/decode')}
               toEncode={this.state.toDecodeAny}
               toDecodeChanged={(event) => this.toDecodeAnythingChangeHandler(event)}
               encoded={this.state.decodedAny}
