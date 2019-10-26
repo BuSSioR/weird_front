@@ -1,0 +1,18 @@
+:local(.container) {
+    margin: 40px;
+    border-bottom: 2px solid #05bad2;
+    border-right: 2px solid #05bad2;
+    transition: 0.3s;
+    -webkit-box-shadow: 10px 10px 23px 5px rgba(179,163,179,1);
+    -moz-box-shadow: 10px 10px 23px 5px rgba(179,163,179,1);
+    box-shadow: 10px 10px 23px 5px rgba(179,163,179,1);
+    background-color: #e6f4f1 !important;    
+  }
+  :local(.content) {
+    font-size: 15px;
+    text-align: center;
+  }
+  :local(.container):hover {
+    border-bottom: 7px solid #05bad2;
+    border-right: 7px solid #05bad2;
+  }
