@@ -1,6 +1,7 @@
 import React from 'react'
 import { Form, FormGroup, Button, Input, Container, Jumbotron, Row, Col } from 'reactstrap';
 import styles from './decodeAny.css'
+// Element to decode anything purpouses
 const InputOutputForm = (props) => (
     <div>
         <Container>

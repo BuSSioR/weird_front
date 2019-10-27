@@ -1,6 +1,8 @@
 import React from 'react'
 import { Row, Col, ListGroup, ListGroupItem, Container, Jumbotron } from 'reactstrap';
 import Logo from './logo.png'
+// header of page
+
 const Header = (props) => (
     <Row>
         <Col md='12'>
