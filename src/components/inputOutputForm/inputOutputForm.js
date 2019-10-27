@@ -1,6 +1,7 @@
 import React from 'react'
 import { Form, FormGroup, Button, Input, Container, Jumbotron } from 'reactstrap';
 import styles from './inputOutputForm.css'
+// form to encoder/native decoder
 const InputOutputForm = (props) => (
   <div>
     <Container>
